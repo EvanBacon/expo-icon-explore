@@ -70,7 +70,7 @@ export default function IconGrid({ icons, onIconClick }: IconGridProps) {
               transform: `translateY(${virtualRow.start}px)`,
             }}
           >
-            <div style={{ display: 'flex', gap: '16px', padding: '0 16px' }}>
+            <div style={{ display: 'flex', gap: '16px', }}>
               {Array.from({ length: columnCount }).map((_, columnIndex) => {
                 const index = virtualRow.index * columnCount + columnIndex;
                 if (index >= icons.length) return <div key={`empty-${columnIndex}`} style={{ flex: '1 0 0', minWidth: 0 }} />;

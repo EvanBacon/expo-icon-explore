@@ -7,6 +7,7 @@ import {
 } from "@/components/ui/dialog";
 import { Button } from "@/components/ui/button";
 import { Check, Copy } from "lucide-react";
+import { HexColorPicker } from "react-colorful";
 
 interface IconModalProps {
   icon: { name: string; Icon: React.ComponentType<any>; setName: string };
@@ -15,10 +16,11 @@ interface IconModalProps {
 
 export default function IconModal({ icon, onClose }: IconModalProps) {
   const [copied, setCopied] = useState(false);
+  const [color, setColor] = useState("#000000");
 
   const codeString = `import ${icon.setName} from '@expo/vector-icons/${icon.setName}'
 
-<${icon.setName} name="${icon.name}" size={12} />`;
+<${icon.setName} name="${icon.name}" size={12} color="${color}" />`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(codeString);
@@ -32,8 +34,9 @@ export default function IconModal({ icon, onClose }: IconModalProps) {
         <DialogHeader>
           <DialogTitle>{icon.name}</DialogTitle>
         </DialogHeader>
-        <div className="flex justify-center my-4">
-          <icon.Icon className="w-16 h-16" />
+        <div className="flex flex-row justify-around items-center my-4">
+          <icon.Icon size={72} color={color} />
+          <HexColorPicker color={color} onChange={setColor} className="mt-4" />
         </div>
         <pre className="bg-muted p-4 rounded-md overflow-x-auto">
           <code>{codeString}</code>

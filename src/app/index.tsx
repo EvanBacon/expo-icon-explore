@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -62,11 +62,8 @@ function formatNumber(num: number): string {
   }
 }
 
-const numberOfIcons = formatNumber(Object.entries(AllIcons)
-  .map(([iconName, IconSet]) => {
-    // <IconSet name={name} />
-    return Object.keys(IconSet.getRawGlyphMap());
-  })
+const numberOfIcons = formatNumber(Object.values(AllIcons)
+  .map((IconSet) => Object.keys(IconSet.getRawGlyphMap()))
   .flat()
   .length);
 
@@ -91,20 +88,51 @@ export default function IconExplorer() {
         .filter(([name]) =>
           name.toLowerCase().includes(searchQuery)
         )
-        .map(([name, Icon]) => ({ name, Icon: () => <Icons name={name} size={24} />, setName }))
+        .map(([name, Icon]) => ({ name, Icon: (props) => <Icons name={name} size={24} {...props} />, setName }))
     );
+
+  const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if ((event.metaKey || event.ctrlKey) && event.key === 'k') {
+        event.preventDefault();
+        searchInputRef.current?.focus();
+      }
+    };
+
+    document.addEventListener('keydown', handleKeyDown);
+
+    return () => {
+      document.removeEventListener('keydown', handleKeyDown);
+    };
+  }, []);
 
   return (
     <div className="container mx-auto px-4 py-8">
-      <h1 className="text-3xl font-bold mb-6 text-center">Icon Explorer</h1>
+      <div className="flex justify-between items-center mb-6">
+        <div className="flex items-center">
+          <img src="/expo.svg" alt="Expo Logo" className="h-8 w-8 mr-2" />
+          <h1 className="text-3xl font-bold">Icon Explorer</h1>
+        </div>
+        <a href="https://docs.expo.dev/guides/icons/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
+          Expo Docs
+        </a>
+      </div>
       <div className="flex gap-4 mb-6">
-        <Input
-          type="search"
-          placeholder={`Search ${numberOfIcons} icons`}
-          value={searchTerm}
-          onChange={(e) => setSearchTerm(e.target.value)}
-          className="flex-grow"
-        />
+        <div className="relative flex-grow">
+          <Input
+            type="search"
+            ref={searchInputRef}
+            placeholder={`Search ${numberOfIcons} icons`}
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full pr-16"
+          />
+          <span className="absolute right-3 top-1/2 -translate-y-1/2 bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">
+            ⌘K
+          </span>
+        </div>
         <Select value={selectedSet} onValueChange={setSelectedSet}>
           <SelectTrigger className="w-[180px]">
             <SelectValue placeholder="Select icon set" />
@@ -120,11 +148,11 @@ export default function IconExplorer() {
         </Select>
       </div>
       <NoSSR>
-      <IconGrid
-        icons={filteredIcons}
-        // icons={[...filteredIcons.slice(0, 10)]}
-        onIconClick={setSelectedIcon}
-      />
+        <IconGrid
+          icons={filteredIcons}
+          // icons={[...filteredIcons.slice(0, 10)]}
+          onIconClick={setSelectedIcon}
+        />
       </NoSSR>
       {selectedIcon && (
         <IconModal icon={selectedIcon} onClose={() => setSelectedIcon(null)} />
