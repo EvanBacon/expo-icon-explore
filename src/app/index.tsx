@@ -97,9 +97,8 @@ export default function IconExplorer() {
               size={24}
               className={cn(
                 className,
-
                 // adjust for light/dark mode
-                "dark:text-white"
+                "text-center dark:text-white"
               )}
               {...props}
             />
