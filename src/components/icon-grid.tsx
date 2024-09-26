@@ -45,7 +45,7 @@ export default function IconGrid({ icons, onIconClick }: IconGridProps) {
   const rowVirtualizer = useVirtualizer({
     count: rowCount,
     getScrollElement: () => document.getElementById('icon-grid-container'),
-    estimateSize: () => 100,
+    estimateSize: () => 120, // Increased to account for gap
     overscan: 5,
   });
 
@@ -70,13 +70,13 @@ export default function IconGrid({ icons, onIconClick }: IconGridProps) {
               transform: `translateY(${virtualRow.start}px)`,
             }}
           >
-            <div style={{ display: 'flex' }}>
+            <div style={{ display: 'flex', gap: '16px', padding: '0 16px' }}>
               {Array.from({ length: columnCount }).map((_, columnIndex) => {
                 const index = virtualRow.index * columnCount + columnIndex;
-                if (index >= icons.length) return null;
+                if (index >= icons.length) return <div key={`empty-${columnIndex}`} style={{ flex: '1 0 0', minWidth: 0 }} />;
                 const icon = icons[index];
                 return (
-                  <div key={`${icon.setName}-${icon.name}`} style={{ width: `${100 / columnCount}%` }}>
+                  <div key={`${icon.setName}-${icon.name}`} style={{ flex: '1 0 0', minWidth: 0 }}>
                     <IconCard icon={icon} onClick={() => onIconClick(icon)} />
                   </div>
                 );

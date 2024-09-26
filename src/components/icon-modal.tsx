@@ -16,9 +16,9 @@ interface IconModalProps {
 export default function IconModal({ icon, onClose }: IconModalProps) {
   const [copied, setCopied] = useState(false);
 
-  const codeString = `import { ${icon.name} } from '${icon.setName}'
+  const codeString = `import ${icon.setName} from '@expo/vector-icons/${icon.setName}'
 
-<${icon.name} />`;
+<${icon.setName} name="${icon.name}" size={12} />`;
 
   const copyToClipboard = () => {
     navigator.clipboard.writeText(codeString);

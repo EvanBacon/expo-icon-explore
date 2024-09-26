@@ -22,6 +22,11 @@ import {
   MaterialIcons,
   MaterialCommunityIcons,
   SimpleLineIcons,
+  AntDesign,
+  FontAwesome5,
+  FontAwesome6,
+  Fontisto,
+  Octicons,
   Zocial,
 } from "@expo/vector-icons";
 
@@ -31,30 +36,40 @@ const AllIcons = {
   EvilIcons,
   Feather,
   FontAwesome,
-
-  // Foundation,
-  // MaterialIcons,
-  // MaterialCommunityIcons,
-  // SimpleLineIcons,
-  // Zocial,
+  AntDesign,
+  FontAwesome5,
+  FontAwesome6,
+  Fontisto,
+  Octicons,
+  Foundation,
+  MaterialIcons,
+  MaterialCommunityIcons,
+  SimpleLineIcons,
+  Zocial,
 };
 
 const iconSets = AllIcons;
 
-// console.log(EvilIcons.glyphMap);
+function formatNumber(num: number): string {
+  if (num >= 1000) {
+    return (num / 1000).toFixed(1) + 'K';
+  } else if (num >= 1000000) {
+    return (num / 1000000).toFixed(1) + 'M';
+  } else if (num >= 1000000000) {
+    return (num / 1000000000).toFixed(1) + 'B';
+  } else {
+    return num.toString();
+  }
+}
 
-const iconItems = Object.entries(AllIcons)
+const numberOfIcons = formatNumber(Object.entries(AllIcons)
   .map(([iconName, IconSet]) => {
     // <IconSet name={name} />
-    return Object.keys(IconSet.glyphMap).map((name) => ({
-      name,
-      Icon: () => <IconSet name={name} size={24} />,
-      setName: iconName,
-    }));
+    return Object.keys(IconSet.getRawGlyphMap());
   })
-  .flat();
+  .flat()
+  .length);
 
-// console.log(iconItems);
 
 function NoSSR({ children }: { children: React.ReactNode }) {
   const [isMounted, setIsMounted] = useState(false);
@@ -72,7 +87,7 @@ export default function IconExplorer() {
   const filteredIcons = Object.entries(iconSets)
     .filter(([setName]) => selectedSet === "all" || setName === selectedSet)
     .flatMap(([setName, Icons]) =>
-      Object.entries(Icons.glyphMap)
+      Object.entries(Icons.getRawGlyphMap())
         .filter(([name]) =>
           name.toLowerCase().includes(searchQuery)
         )
@@ -85,7 +100,7 @@ export default function IconExplorer() {
       <div className="flex gap-4 mb-6">
         <Input
           type="search"
-          placeholder="Search icons..."
+          placeholder={`Search ${numberOfIcons} icons`}
           value={searchTerm}
           onChange={(e) => setSearchTerm(e.target.value)}
           className="flex-grow"
