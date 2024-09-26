@@ -13,10 +13,12 @@ export default function IconCard({ icon, onClick }: IconCardProps) {
     >
       <CardContent className="p-0 flex flex-col items-center gap-1">
         <icon.Icon className="w-8 h-8 mb-2" />
-        <p className="text-xs text-center truncate w-full">{icon.name}</p>
-        <p className="text-xs text-center text-muted-foreground">
-          {icon.setName}
+        <p className="text-xs text-center truncate w-full text-muted-foreground">
+          {icon.name}
         </p>
+        {/* <p className="text-xs text-center text-muted-foreground">
+          {icon.setName}
+        </p> */}
       </CardContent>
     </Card>
   );

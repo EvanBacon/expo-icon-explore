@@ -5,6 +5,7 @@
   "scripts": {
     "start": "expo start",
     "web": "expo start --web",
+    "deploy": "npx expo export -p web && EXPO_STAGING=1 eas deploy --prod",
     "lint": "eslint ."
   },
   "dependencies": {

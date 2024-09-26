@@ -1,5 +1,5 @@
-import { useState, useEffect } from "react";
 import { useVirtualizer } from "@tanstack/react-virtual";
+import { useEffect, useState } from "react";
 import IconCard from "./icon-card";
 
 interface IconGridProps {
@@ -44,39 +44,51 @@ export default function IconGrid({ icons, onIconClick }: IconGridProps) {
 
   const rowVirtualizer = useVirtualizer({
     count: rowCount,
-    getScrollElement: () => document.getElementById('icon-grid-container'),
-    estimateSize: () => 120, // Increased to account for gap
+    getScrollElement: () => document.getElementById("icon-grid-container"),
+    estimateSize: () => 100, // Increased to account for gap
     overscan: 5,
   });
 
   return (
-    <div id="icon-grid-container" style={{ height: dimensions.height, overflow: 'auto' }}>
+    <div
+      id="icon-grid-container"
+      style={{ height: dimensions.height, overflow: "auto" }}
+    >
       <div
         style={{
           height: `${rowVirtualizer.getTotalSize()}px`,
-          width: '100%',
-          position: 'relative',
+          width: "100%",
+          position: "relative",
         }}
       >
         {rowVirtualizer.getVirtualItems().map((virtualRow) => (
           <div
             key={virtualRow.index}
             style={{
-              position: 'absolute',
+              position: "absolute",
               top: 0,
               left: 0,
-              width: '100%',
+              width: "100%",
               height: `${virtualRow.size}px`,
               transform: `translateY(${virtualRow.start}px)`,
             }}
           >
-            <div style={{ display: 'flex', gap: '16px', }}>
+            <div style={{ display: "flex", gap: "16px" }}>
               {Array.from({ length: columnCount }).map((_, columnIndex) => {
                 const index = virtualRow.index * columnCount + columnIndex;
-                if (index >= icons.length) return <div key={`empty-${columnIndex}`} style={{ flex: '1 0 0', minWidth: 0 }} />;
+                if (index >= icons.length)
+                  return (
+                    <div
+                      key={`empty-${columnIndex}`}
+                      style={{ flex: "1 0 0", minWidth: 0 }}
+                    />
+                  );
                 const icon = icons[index];
                 return (
-                  <div key={`${icon.setName}-${icon.name}`} style={{ flex: '1 0 0', minWidth: 0 }}>
+                  <div
+                    key={`${icon.setName}-${icon.name}`}
+                    style={{ flex: "1 0 0", minWidth: 0 }}
+                  >
                     <IconCard icon={icon} onClick={() => onIconClick(icon)} />
                   </div>
                 );

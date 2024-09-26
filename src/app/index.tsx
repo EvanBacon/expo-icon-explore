@@ -89,7 +89,7 @@ export default function IconExplorer() {
     .flatMap(([setName, Icons]) =>
       Object.entries(Icons.getRawGlyphMap())
         .filter(([name]) => name.toLowerCase().includes(searchQuery))
-        .map(([name, Icon]) => ({
+        .map(([name]) => ({
           name,
           Icon: ({ className, ...props }) => (
             <Icons
