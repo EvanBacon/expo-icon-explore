@@ -129,8 +129,19 @@ export default function IconExplorer() {
     <div className="container mx-auto px-4 pt-8">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center">
-          <img src="/expo.svg" alt="Expo Logo" className="h-6 w-6 mr-2" />
-          <h1 className="text-2xl font-bold">Icon Explorer</h1>
+          <img
+            src="/expo.svg"
+            alt="Expo Logo"
+            className="h-8 w-8 mr-3 dark:filter dark:invert"
+          />
+          <div>
+            <h1 className="text-2xl font-bold">Icon Explorer</h1>
+            <p className="text-sm text-muted-foreground">
+              {`@expo/vector-icons@${
+                require("@expo/vector-icons/package.json").version
+              }`}
+            </p>
+          </div>
         </div>
         <div className="flex items-center gap-4">
           <a

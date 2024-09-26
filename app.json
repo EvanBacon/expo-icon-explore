@@ -3,6 +3,7 @@
     "scheme": "acme",
     "userInterfaceStyle": "automatic",
     "orientation": "default",
+    "platforms": ["web"],
     "web": {
       "output": "static",
       "bundler": "metro",
