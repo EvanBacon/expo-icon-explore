@@ -1,100 +1,110 @@
-import { Link } from "expo-router";
-import React from "react";
-import { Text, View } from "react-native";
-import { useSafeAreaInsets } from "react-native-safe-area-context";
+"use client";
 
-import { Button } from "@/components/ui/button";
+import { useState } from "react";
+import { Input } from "@/components/ui/input";
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from "@/components/ui/select";
+import IconGrid from "@/components/icon-grid";
+import IconModal from "@/components/icon-modal";
 
-export default function Page() {
+import {
+  Ionicons,
+  Entypo,
+  EvilIcons,
+  Feather,
+  FontAwesome,
+  Foundation,
+  MaterialIcons,
+  MaterialCommunityIcons,
+  SimpleLineIcons,
+  Zocial,
+} from "@expo/vector-icons";
+
+const AllIcons = {
+  Ionicons,
+  Entypo,
+  EvilIcons,
+  Feather,
+  FontAwesome,
+
+  Foundation,
+  MaterialIcons,
+  MaterialCommunityIcons,
+  SimpleLineIcons,
+  Zocial,
+};
+
+const iconSets = AllIcons;
+
+console.log(EvilIcons.glyphMap);
+
+const iconItems = Object.entries(AllIcons)
+  .map(([iconName, IconSet]) => {
+    // <IconSet name={name} />
+    return Object.keys(IconSet.glyphMap).map((name) => ({
+      name,
+      Icon: () => <IconSet name={name} size={24} />,
+      setName: iconName,
+    }));
+  })
+  .flat();
+
+console.log(iconItems);
+
+export default function IconExplorer() {
+  const [searchTerm, setSearchTerm] = useState("");
+  const [selectedSet, setSelectedSet] = useState("all");
+  const [selectedIcon, setSelectedIcon] = useState(null);
+
+  const searchQuery = searchTerm.toLowerCase();
+  const filteredIcons = Object.entries(iconSets)
+    .filter(([setName]) => selectedSet === "all" || setName === selectedSet)
+    .flatMap(([setName, Icons]) =>
+      Object.entries(Icons.glyphMap)
+        .filter(([name]) =>
+          name.toLowerCase().includes(searchQuery)
+        )
+        .map(([name, Icon]) => ({ name, Icon: () => <Icons name={name} size={24} />, setName }))
+    );
+
   return (
-    <View className="flex flex-1">
-      <Header />
-      <Text>
-        <Button variant="outline">Primary</Button>
-      </Text>
-      <Content />
-      <Footer />
-    </View>
-  );
-}
-
-function Content() {
-  return (
-    <View className="flex-1">
-      <View className="py-12 md:py-24 lg:py-32 xl:py-48">
-        <View className="px-4 md:px-6">
-          <View className="flex flex-col items-center gap-4 text-center">
-            <Text
-              role="heading"
-              className="text-3xl text-center native:text-5xl font-bold tracking-tighter sm:text-4xl md:text-5xl lg:text-6xl"
-            >
-              Welcome to Project ACME
-            </Text>
-            <Text className="mx-auto max-w-[700px] text-lg text-center text-gray-500 md:text-xl dark:text-gray-400">
-              Discover and collaborate on acme. Explore our services now.
-            </Text>
-
-            <View className="gap-4">
-              <Link
-                suppressHighlighting
-                className="flex h-9 items-center justify-center overflow-hidden rounded-md bg-gray-900 px-4 py-2 text-sm font-medium text-gray-50 web:shadow ios:shadow transition-colors hover:bg-gray-900/90 active:bg-gray-400/90 web:focus-visible:outline-none web:focus-visible:ring-1 focus-visible:ring-gray-950 disabled:pointer-events-none disabled:opacity-50 dark:bg-gray-50 dark:text-gray-900 dark:hover:bg-gray-50/90 dark:focus-visible:ring-gray-300"
-                href="/"
-              >
-                Explore
-              </Link>
-            </View>
-          </View>
-        </View>
-      </View>
-    </View>
-  );
-}
-
-function Header() {
-  const { top } = useSafeAreaInsets();
-  return (
-    <View style={{ paddingTop: top }}>
-      <View className="px-4 lg:px-6 h-14 flex items-center flex-row justify-between ">
-        <Link className="font-bold flex-1 items-center justify-center" href="/">
-          ACME
-        </Link>
-        <View className="flex flex-row gap-4 sm:gap-6">
-          <Link
-            className="text-md font-medium hover:underline web:underline-offset-4"
-            href="/"
-          >
-            About
-          </Link>
-          <Link
-            className="text-md font-medium hover:underline web:underline-offset-4"
-            href="/"
-          >
-            Product
-          </Link>
-          <Link
-            className="text-md font-medium hover:underline web:underline-offset-4"
-            href="/"
-          >
-            Pricing
-          </Link>
-        </View>
-      </View>
-    </View>
-  );
-}
-
-function Footer() {
-  const { bottom } = useSafeAreaInsets();
-  return (
-    <View
-      className="flex shrink-0 bg-gray-100 native:hidden"
-      style={{ paddingBottom: bottom }}
-    >
-      <View className="py-6 flex-1 items-start px-4 md:px-6 ">
-        <Text className={"text-center text-gray-700"}>
-          © {new Date().getFullYear()} Me
-        </Text>
-      </View>
-    </View>
+    <div className="container mx-auto px-4 py-8">
+      <h1 className="text-3xl font-bold mb-6 text-center">Icon Explorer</h1>
+      <div className="flex gap-4 mb-6">
+        <Input
+          type="search"
+          placeholder="Search icons..."
+          value={searchTerm}
+          onChange={(e) => setSearchTerm(e.target.value)}
+          className="flex-grow"
+        />
+        <Select value={selectedSet} onValueChange={setSelectedSet}>
+          <SelectTrigger className="w-[180px]">
+            <SelectValue placeholder="Select icon set" />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="all">All Sets</SelectItem>
+            {Object.keys(iconSets).map((setName) => (
+              <SelectItem key={setName} value={setName}>
+                {setName}
+              </SelectItem>
+            ))}
+          </SelectContent>
+        </Select>
+      </div>
+      <IconGrid
+        icons={filteredIcons}
+        // icons={[...filteredIcons.slice(0, 10)]}
+        onIconClick={setSelectedIcon}
+      />
+      {selectedIcon && (
+        <IconModal icon={selectedIcon} onClose={() => setSelectedIcon(null)} />
+      )}
+    </div>
   );
 }
