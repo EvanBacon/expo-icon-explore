@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { Input } from "@/components/ui/input";
 import {
   Select,
@@ -32,16 +32,16 @@ const AllIcons = {
   Feather,
   FontAwesome,
 
-  Foundation,
-  MaterialIcons,
-  MaterialCommunityIcons,
-  SimpleLineIcons,
-  Zocial,
+  // Foundation,
+  // MaterialIcons,
+  // MaterialCommunityIcons,
+  // SimpleLineIcons,
+  // Zocial,
 };
 
 const iconSets = AllIcons;
 
-console.log(EvilIcons.glyphMap);
+// console.log(EvilIcons.glyphMap);
 
 const iconItems = Object.entries(AllIcons)
   .map(([iconName, IconSet]) => {
@@ -54,7 +54,14 @@ const iconItems = Object.entries(AllIcons)
   })
   .flat();
 
-console.log(iconItems);
+// console.log(iconItems);
+
+function NoSSR({ children }: { children: React.ReactNode }) {
+  const [isMounted, setIsMounted] = useState(false);
+  useEffect(() => setIsMounted(true), []);
+
+  return isMounted ? children : null;
+}
 
 export default function IconExplorer() {
   const [searchTerm, setSearchTerm] = useState("");
@@ -97,11 +104,13 @@ export default function IconExplorer() {
           </SelectContent>
         </Select>
       </div>
+      <NoSSR>
       <IconGrid
         icons={filteredIcons}
         // icons={[...filteredIcons.slice(0, 10)]}
         onIconClick={setSelectedIcon}
       />
+      </NoSSR>
       {selectedIcon && (
         <IconModal icon={selectedIcon} onClose={() => setSelectedIcon(null)} />
       )}
