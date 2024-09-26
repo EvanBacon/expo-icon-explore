@@ -30,6 +30,18 @@ import {
   Zocial,
 } from "@expo/vector-icons";
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import { Button } from "@/components/ui/button"
+
+import { Sun, Moon } from "lucide-react"
+import { cn } from "@/lib/utils";
+
 const AllIcons = {
   AntDesign,
   Entypo,
@@ -67,27 +79,6 @@ const numberOfIcons = formatNumber(Object.values(AllIcons)
   .flat()
   .length);
 
-
-function NoSSR({ children }: { children: React.ReactNode }) {
-  const [isMounted, setIsMounted] = useState(false);
-  useEffect(() => setIsMounted(true), []);
-
-  return isMounted ? children : null;
-}
-
-import {
-  DropdownMenu,
-  DropdownMenuContent,
-  DropdownMenuItem,
-  DropdownMenuLabel,
-  DropdownMenuSeparator,
-  DropdownMenuTrigger,
-} from "@/components/ui/dropdown-menu"
-
-import { Button } from "@/components/ui/button"
-
-import { Sun, Moon } from "lucide-react"
-import { cn } from "@/lib/utils";
 
 export default function IconExplorer() {
   const [searchTerm, setSearchTerm] = useState("");

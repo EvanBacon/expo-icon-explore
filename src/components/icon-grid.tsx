@@ -3,11 +3,11 @@ import { useVirtualizer } from "@tanstack/react-virtual";
 import IconCard from "./icon-card";
 
 interface IconGridProps {
-  icons: Array<{
+  icons: {
     name: string;
     Icon: React.ComponentType<any>;
     setName: string;
-  }>;
+  }[];
   onIconClick: (icon: {
     name: string;
     Icon: React.ComponentType<any>;
