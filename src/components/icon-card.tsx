@@ -12,7 +12,9 @@ export default function IconCard({ icon, onClick }: IconCardProps) {
       onClick={onClick}
     >
       <CardContent className="p-0 flex flex-col items-center gap-1">
-        <icon.Icon className="w-8 h-8 mb-2" />
+        <div className="w-8 h-8 flex items-center justify-center" >
+          <icon.Icon />
+        </div>
         <p className="text-xs text-center truncate w-full text-muted-foreground">
           {icon.name}
         </p>
