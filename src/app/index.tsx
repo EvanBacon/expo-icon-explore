@@ -31,19 +31,19 @@ import {
 } from "@expo/vector-icons";
 
 const AllIcons = {
-  Ionicons,
+  AntDesign,
   Entypo,
   EvilIcons,
   Feather,
   FontAwesome,
-  AntDesign,
   FontAwesome5,
   FontAwesome6,
   Fontisto,
-  Octicons,
   Foundation,
+  Ionicons,
   MaterialIcons,
   MaterialCommunityIcons,
+  Octicons,
   SimpleLineIcons,
   Zocial,
 };
@@ -109,7 +109,7 @@ export default function IconExplorer() {
   }, []);
 
   return (
-    <div className="container mx-auto px-4 py-8">
+    <div className="container mx-auto px-4 pt-8">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center">
           <img src="/expo.svg" alt="Expo Logo" className="h-8 w-8 mr-2" />
@@ -147,13 +147,12 @@ export default function IconExplorer() {
           </SelectContent>
         </Select>
       </div>
-      <NoSSR>
+      
         <IconGrid
           icons={filteredIcons}
-          // icons={[...filteredIcons.slice(0, 10)]}
           onIconClick={setSelectedIcon}
         />
-      </NoSSR>
+      
       {selectedIcon && (
         <IconModal icon={selectedIcon} onClose={() => setSelectedIcon(null)} />
       )}
