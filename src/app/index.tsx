@@ -3,10 +3,15 @@ import React from "react";
 import { Text, View } from "react-native";
 import { useSafeAreaInsets } from "react-native-safe-area-context";
 
+import { Button } from "@/components/ui/button";
+
 export default function Page() {
   return (
     <View className="flex flex-1">
       <Header />
+      <Text>
+        <Button variant="outline">Primary</Button>
+      </Text>
       <Content />
       <Footer />
     </View>
