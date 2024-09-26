@@ -1,5 +1,3 @@
-"use client";
-
 import IconGrid from "@/components/icon-grid";
 import IconModal from "@/components/icon-modal";
 import { Input } from "@/components/ui/input";
