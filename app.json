@@ -3,7 +3,6 @@
     "scheme": "acme",
     "userInterfaceStyle": "automatic",
     "orientation": "default",
-    
     "web": {
       "output": "static",
       "bundler": "metro",
@@ -18,6 +17,11 @@
       ]
     ],
     "name": "icon-explore",
-    "slug": "icon-explore"
+    "slug": "icon-explore",
+    "extra": {
+      "eas": {
+        "projectId": "f83b6d78-dcac-4b4a-a55f-e7ae64a8061b"
+      }
+    }
   }
 }

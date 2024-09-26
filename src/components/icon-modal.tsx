@@ -16,7 +16,7 @@ interface IconModalProps {
 
 export default function IconModal({ icon, onClose }: IconModalProps) {
   const [copied, setCopied] = useState(false);
-  const [color, setColor] = useState("#000000");
+  const [color, setColor] = useState( document.documentElement.classList.contains("dark") ? "#ffffff" : "#000000");
 
   const codeString = `import ${icon.setName} from '@expo/vector-icons/${icon.setName}'
 

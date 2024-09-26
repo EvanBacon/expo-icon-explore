@@ -75,6 +75,20 @@ function NoSSR({ children }: { children: React.ReactNode }) {
   return isMounted ? children : null;
 }
 
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuLabel,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from "@/components/ui/dropdown-menu"
+
+import { Button } from "@/components/ui/button"
+
+import { Sun, Moon } from "lucide-react"
+import { cn } from "@/lib/utils";
+
 export default function IconExplorer() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSet, setSelectedSet] = useState("all");
@@ -88,7 +102,11 @@ export default function IconExplorer() {
         .filter(([name]) =>
           name.toLowerCase().includes(searchQuery)
         )
-        .map(([name, Icon]) => ({ name, Icon: (props) => <Icons name={name} size={24} {...props} />, setName }))
+        .map(([name, Icon]) => ({ name, Icon: ({className, ...props}) => <Icons name={name} size={24} className={cn(className, 
+
+          // adjust for light/dark mode
+          'dark:text-white'
+        )} {...props} />, setName }))
     );
 
   const searchInputRef = useRef<HTMLInputElement>(null);
@@ -112,12 +130,38 @@ export default function IconExplorer() {
     <div className="container mx-auto px-4 pt-8">
       <div className="flex justify-between items-center mb-6">
         <div className="flex items-center">
-          <img src="/expo.svg" alt="Expo Logo" className="h-8 w-8 mr-2" />
-          <h1 className="text-3xl font-bold">Icon Explorer</h1>
+          <img src="/expo.svg" alt="Expo Logo" className="h-6 w-6 mr-2" />
+          <h1 className="text-2xl font-bold">Icon Explorer</h1>
         </div>
+        <div className="flex items-center gap-4">
         <a href="https://docs.expo.dev/guides/icons/" target="_blank" rel="noopener noreferrer" className="text-blue-500 hover:underline">
           Expo Docs
         </a>
+
+        <DropdownMenu>
+          <DropdownMenuTrigger asChild>
+            <Button variant="ghost" size="icon">
+              <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all dark:-rotate-90 dark:scale-0" />
+              <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-90 scale-0 transition-all dark:rotate-0 dark:scale-100" />
+              <span className="sr-only">Toggle theme</span>
+            </Button>
+          </DropdownMenuTrigger>
+          <DropdownMenuContent align="end">
+            <DropdownMenuItem onClick={() => { 
+              document.documentElement.classList.remove("dark"); 
+              document.documentElement.classList.add("light") 
+              }}>
+              Light
+            </DropdownMenuItem>
+            <DropdownMenuItem onClick={() => {
+              document.documentElement.classList.remove("light");
+              document.documentElement.classList.add("dark");
+            }}>
+              Dark
+            </DropdownMenuItem>
+          </DropdownMenuContent>
+        </DropdownMenu>
+        </div>
       </div>
       <div className="flex gap-4 mb-6">
         <div className="relative flex-grow">
@@ -147,12 +191,12 @@ export default function IconExplorer() {
           </SelectContent>
         </Select>
       </div>
-      
-        <IconGrid
-          icons={filteredIcons}
-          onIconClick={setSelectedIcon}
-        />
-      
+
+      <IconGrid
+        icons={filteredIcons}
+        onIconClick={setSelectedIcon}
+      />
+
       {selectedIcon && (
         <IconModal icon={selectedIcon} onClose={() => setSelectedIcon(null)} />
       )}

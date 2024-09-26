@@ -22,7 +22,7 @@ export default function IconGrid({ icons, onIconClick }: IconGridProps) {
     const updateDimensions = () => {
       setDimensions({
         width: window.innerWidth,
-        height: window.innerHeight,
+        height: window.innerHeight * 0.83,
       });
     };
 
