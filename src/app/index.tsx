@@ -189,7 +189,7 @@ export default function IconExplorer() {
             placeholder={`Search ${numberOfIcons} icons`}
             value={searchTerm}
             onChange={(e) => setSearchTerm(e.target.value)}
-            className="w-full pr-16"
+            className="w-full pr-16 text-base"
           />
           <span className="absolute right-3 top-1/2 -translate-y-1/2 bg-muted text-muted-foreground text-xs px-1.5 py-0.5 rounded">
             ⌘K
