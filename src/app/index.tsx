@@ -82,6 +82,7 @@ export default function IconExplorer() {
   const [searchTerm, setSearchTerm] = useState("");
   const [selectedSet, setSelectedSet] = useState("all");
   const [selectedIcon, setSelectedIcon] = useState(null);
+  const setRefs = useRef({});
 
   const searchQuery = searchTerm.toLowerCase();
   const filteredIcons = Object.entries(iconSets)
@@ -108,6 +109,16 @@ export default function IconExplorer() {
     );
 
   const searchInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (selectedSet && setRefs.current[selectedSet]) {
+      setRefs.current[selectedSet].scrollIntoView({
+        behavior: "smooth",
+        block: "nearest",
+        inline: "center",
+      });
+    }
+  }, [selectedSet]);
 
   useEffect(() => {
     const handleKeyDown = (event: KeyboardEvent) => {
@@ -208,6 +219,63 @@ export default function IconExplorer() {
             ))}
           </SelectContent>
         </Select>
+      </div>
+      <div id="setsbar" className="flex gap-4 mb-4 overflow-auto">
+        <p
+          ref={(el) => (setRefs.current["all"] = el)}
+          onClick={() => setSelectedSet("all")}
+          className={`
+            py-2 
+            px-3 
+            rounded-md 
+            cursor-pointer 
+            transition-colors
+            whitespace-nowrap
+            min-w-fit
+            ${
+              selectedSet === "all"
+                ? "bg-[#0F172A] dark:bg-accent shadow-md text-accent"
+                : "hover:bg-accent "
+            }
+            border
+            ${
+              selectedSet === "all"
+                ? "border-gray-600 "
+                : "border-gray-300 dark:border-[#1D293A]"
+            }
+            text-gray-900 dark:text-gray-100
+          `}
+        >
+          All Sets
+        </p>
+        {Object.keys(iconSets).map((setName) => (
+          <p
+            key={setName}
+            ref={(el) => (setRefs.current[setName] = el)}
+            onClick={() => setSelectedSet(setName)}
+            className={`
+            py-2 
+            px-3 
+            rounded-md 
+            cursor-pointer 
+            transition-colors
+            ${
+              selectedSet === setName
+                ? "bg-[#0F172A] dark:bg-accent shadow-md text-accent"
+                : "hover:bg-accent "
+            }
+            border
+            ${
+              selectedSet === setName
+                ? "border-gray-600 "
+                : "border-gray-300 dark:border-[#1D293A]"
+            }
+            text-gray-900 dark:text-gray-100
+          `}
+          >
+            {setName}
+          </p>
+        ))}
       </div>
 
       <IconGrid icons={filteredIcons} onIconClick={setSelectedIcon} />
